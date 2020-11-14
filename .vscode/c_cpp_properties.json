@@ -1,0 +1,67 @@
+{
+    "configurations": [
+        {
+            "name": "!!! WARNING !!! AUTO-GENERATED FILE, PLEASE DO NOT MODIFY IT AND USE https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "/home/miob/repo_priv/stalowa_gateway_primary/include",
+                "/home/miob/repo_priv/stalowa_gateway_primary/src",
+                "/home/miob/repo_priv/stalowa_gateway_primary/lib/MySensors",
+                "/home/miob/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/home/miob/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "/home/miob/repo_priv/stalowa_gateway_primary/.pio/libdeps/megaatmega2560/avr-debugger/avr8-stub",
+                "/home/miob/repo_priv/stalowa_gateway_primary/.pio/libdeps/megaatmega2560/Bounce2/src",
+                "/home/miob/repo_priv/stalowa_gateway_primary/.pio/libdeps/megaatmega2560/Ethernet/src",
+                "/home/miob/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/home/miob/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/home/miob/.platformio/packages/framework-arduino-avr/variants/mega",
+                "/home/miob/.platformio/lib/I2Cdevlib-esphomelib_ID3838/src",
+                "/home/miob/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/home/miob/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "/home/miob/.platformio/packages/tool-unity",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/miob/repo_priv/stalowa_gateway_primary/include",
+                    "/home/miob/repo_priv/stalowa_gateway_primary/src",
+                    "/home/miob/repo_priv/stalowa_gateway_primary/lib/MySensors",
+                    "/home/miob/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/home/miob/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "/home/miob/repo_priv/stalowa_gateway_primary/.pio/libdeps/megaatmega2560/avr-debugger/avr8-stub",
+                    "/home/miob/repo_priv/stalowa_gateway_primary/.pio/libdeps/megaatmega2560/Bounce2/src",
+                    "/home/miob/repo_priv/stalowa_gateway_primary/.pio/libdeps/megaatmega2560/Ethernet/src",
+                    "/home/miob/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/home/miob/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/home/miob/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "/home/miob/.platformio/lib/I2Cdevlib-esphomelib_ID3838/src",
+                    "/home/miob/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/home/miob/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "/home/miob/.platformio/packages/tool-unity",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=50003",
+                "ARDUINO_AVR_MEGA2560",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega2560__",
+                ""
+            ],
+            "intelliSenseMode": "gcc-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/home/miob/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega2560",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
