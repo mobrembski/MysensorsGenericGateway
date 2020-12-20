@@ -4,12 +4,88 @@
 #include "database_types.h"
 #include "callbacks.h"
 
+/*
+problemy: 
+26 pin tj switch toaleta nie wykrywa stanu wysokiego
+21 pin nie zmienia stanu, dlaczego?
+20 pin stan wysoki to ok 0.9V dlaczego?
+10 pin zajęty przez ethernet trzeba zmienic
+
+Wyjścia:
+1. Korytarz parter brązowy pin 42
+2. Korytarz parter czarny pin 41
+3. Przedpokój brązowy pin 40
+4. Korytarz piętro brązowy pin 39 
+5. Korytarz piętro czarny pin 38
+6. (Schody kinkiety?) pin 37
+7. (Schody ledy?) pin 36
+8. Salon 1 brązowy pin 35
+9. Salon 1 czarny pin 34
+10. Salon 2 brązowy pin 33
+11. Salon 2 czarny pin 32
+12. (kinkiety brązowe?) pin 31 
+13. Kuchnia brązowy pin 22
+14. (Kuchnia czarny?) pin 21
+15. (Kuchnia kinkiet?) pin 20
+16. (Gabinet brązowy?) pin 19
+17. (Gabinet czarny?) pin 18
+18. Sypialnia brązowy pin 17
+19. Sypialnia czarny pin 16
+20. Dziecko brązowy pin 15
+21. Dziecko czarny pin 14
+22. Toaleta parter pin 2
+23. (Łazienka brązowy?) pin 3 
+24. (Łazienka czarny?) pin 4
+25. (Ośw ganek?) pin 43
+26. (Ośw przód domu?) pin 44 
+27. (Ośw balkon?) pin 45
+28. (ośw balkon?) pin 46
+29. Piwnica pin 47
+30. Pralnia pin 48
+31. Garaż pin 49
+32. Ogród pin 50
+piny 51 52 i 53 podłączone do wyjść 33,34,35 nie wykorzystane
+Wyjście 36 podłączone do niebieskiego, nie podłączone do płytki
+Wejścia:
+1. Ganek (przedpokój czarny) pin 30
+2. Piwnica (przedpokój szary) pin 29
+3. Przedpokój (przedpokój niebieski) pin 28
+4. Korytarz parter (niebieski) pin 27
+5. Toaleta parter (niebieski) pin 26
+6. Kuchnia niebieski pin 25
+7. Kucnia Czarny pin 24
+8. Kuchnia szary pin 23
+9. Salon 1 niebieski pin 6 
+10. Salon 1 Czarny pin 7
+11. Salon 2 niebieski pin 8 
+12. Salon 2 czarny pin 9
+13. Salon kinkiet niebieski pin 10
+14. Schody dół niebieski pin 11
+15. Schody dół czarny pin 12
+16. Schody góra niebieski pin 13 
+17. Schody góra 2 czarny pin A14
+18. Schody góra szary pin A13
+19. Schody góra 2 niebieski pin A12
+20. Schody góra czarny pin A11
+21. Sypialnia niebieski pin A10
+22. Sypialnia czarny pin A09
+23. Taras niebieski pin A08
+24. Taras czarny pin A07
+25. Gabinet niebieski pin A06
+26. Gabinet czarny pin A05
+27. Łazienka niebieski pin A04
+28. Łazienka czarny pin A03
+29. Dziecko niebieski pin A02
+30. Dziecko czarny pin A01
+31. Garaż pin A0
+32. Pralnia pin A15
+*/
+
 typedef enum {
-  SWITCH_WEJSCIE = 0,  // 1 Pojedynczy /30 OK 25?
-  SWITCH_PIWNICA,      // 2 Pojedynczy /29 OK 29
-  SWITCH_KOR_PARTER,   // 3 /28 OK 1
-  SWITCH_PRZEDPOKOJ,   // - Podwojny
-  SWITCH_KOR_PARTER_2, // 4 Pojedynczy /27 OK 1
+  SWITCH_WEJSCIE = 0,  // 1 Pojedynczy /30
+  SWITCH_PIWNICA,      // 2 Pojedynczy /29
+  SWITCH_PRZEDPOKOJ,   // 3 Podwojny   /28
+  SWITCH_KOR_PARTER,   // 4 Pojedynczy /27 OK 1
   SWITCH_TOALETA,      // 5 Pojedynczy /26 NOK? jest inactive sprawdzic dlaczego
   SWITCH_KUCHNIA_1,    // 6            /25 OK 13
   SWITCH_KUCHNIA_2,    // 7 Podwojny   /24 NOK? Dlaczego na pinie 21 jest tylko 1.1V?
@@ -19,7 +95,7 @@ typedef enum {
   SWITCH_SALON2_1,     // 11           /8 OK
   SWITCH_SALON2_2,     // 12 Podwojny  /9 OK
   SWITCH_SALON_KINKIETY,// 13 Pojedynczy /10 - NOK Do Zmiany! zajęte przez SPI EN
-  SWITCH_SCHODY,       // 14 Pojedynczy - automatyka dla kinkietow /11 OK 7
+  SWITCH_SCHODY,       // 14 Pojedynczy /11
   SWITCH_SCHODY_KINKIETY, // 15          /12 OK 6
   SWITCH_SCHODY_GORA,   // 16            /13 OK 7
   SWITCH_SCHODY_GORA_KINKIETY, // 17     /A14 OK 6
@@ -32,11 +108,12 @@ typedef enum {
   SWITCH_OGROD,        // 24 Podwojny   /A7 OK 32
   SWITCH_GABINET_1,    // 25            /A6 OK 16
   SWITCH_GABINET_2,    // 26 Podwojny   /A5 OK 17
-  SWITCH_LAZIENKA,     // 27 Pojedynczy - automatyka dla nocnego /A4
-  SWITCH_DZIECKO_1,    // 28            /A3
-  SWITCH_DZIECKO_2,    // 29 Podwojny   /A2 OK 21
-  SWITCH_PRALNIA,      // 31            /A1 (A15?) OK 30 
-  SWITCH_GARAZ,        // 32            /A0 OK 31
+  SWITCH_LAZIENKA,     // 27 /A4
+  SWITCH_LAZIENKA_2,   // 28 /A3
+  SWITCH_DZIECKO_1,    // 29            /A2
+  SWITCH_DZIECKO_2,    // 30 Podwojny   /A1 OK 21
+  SWITCH_GARAZ,        // 31            /A0 OK 31
+  SWITCH_PRALNIA,      // 32            /A15 OK 30 
   SWITCH_MAX_ID        // 28 sztuk
 } switchIds;
 
@@ -92,27 +169,21 @@ static tLightSwitch m_lights[] =
     .description = "WlacznikPiwnica",
     .relayId = RELAY_PIWNICA,
   },
-  { // SWITCH_KOR_PARTER
+  { // SWITCH_PRZEDPOKOJ
     .pin = 28,
+    .description = "WlacznikPrzedpokoj",
+    .relayId = RELAY_PRZEDPOKOJ,
+  },
+  { // SWITCH_KOR_PARTER
+    .pin = 27,
     .description = "WlacznikKorParter",
     .relayId = RELAY_KOR_PARTER_1,
-  },
-  { // SWITCH_PRZEDPOKOJ
-    .pin = 27,
-    .description = "WlacznikPrzedpokoj",
-    .relayId = RELAY_KOR_PARTER_1,
-  },
-  { // SWITCH_KOR_PARTER_2
-    .pin = 27,
-    .description = "WlacznikKorParter2",
-    .relayId = RELAY_KOR_PARTER_2,
-    .inactive = true,
   },
   { // SWITCH_TOALETA
     .pin = 26,
     .description = "WlacznikToaleta",
     .relayId = RELAY_TOALETA,
-    .inactive = true,
+    .inactive = false,
   },
   { // SWITCH_KUCHNIA_1
     .pin = 25,
@@ -225,20 +296,20 @@ static tLightSwitch m_lights[] =
     .description = "WlacznikLazienka",
     .relayId = RELAY_LAZIENKA_1,
   },
-  { // SWITCH_DZIECKO_1
+  { // SWITCH_LAZIENKA_2
     .pin = A3,
+    .description = "WlacznikLazienka2",
+    .relayId = RELAY_LAZIENKA_2,
+  },
+  { // SWITCH_DZIECKO_1
+    .pin = A2,
     .description = "WlacznikDziecko1",
     .relayId = RELAY_DZIECKO_1,
   },
   { // SWITCH_DZIECKO_2
-    .pin = A2,
-    .description = "WlacznikDziecko1",
+    .pin = A1,
+    .description = "WlacznikDziecko2",
     .relayId = RELAY_DZIECKO_2,
-  },
-  { // SWITCH_PRALNIA
-    .pin = A15,
-    .description = "WlacznikPralnia",
-    .relayId = RELAY_KOTLOWNIA,
   },
   { // SWITCH_GARAZ
     .pin = A0,
@@ -246,7 +317,12 @@ static tLightSwitch m_lights[] =
     .relayId = RELAY_GARAZ,
     .inactive = false,
     .longPressCallback = &garageLongPress,
-  }
+  },
+  { // SWITCH_PRALNIA
+    .pin = A15,
+    .description = "WlacznikPralnia",
+    .relayId = RELAY_KOTLOWNIA,
+  },
 };
 
 static tRelay m_relays[] =
@@ -356,11 +432,11 @@ static tRelay m_relays[] =
     .description = "SwiatloUlica",
   },
   { // RELAY_BALKON
-    .pin = 45,
+    .pin = 46,
     .description = "SwiatloBalkon",
   },
   { // RELAY_TARAS
-    .pin = 46,
+    .pin = 45,
     .description = "SwiatloTaras",
   },
   { // RELAY_PIWNICA
