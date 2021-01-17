@@ -10,6 +10,9 @@ typedef struct {
   const char* description;
   const uint8_t relayId;
   const bool inactive;
+#ifdef MCP23017_SUPPORT
+  const uint8_t i2cAddress;
+#endif
   tLongPressCallback longPressCallback;
   bool currentState;
   
@@ -23,6 +26,9 @@ typedef struct {
 typedef struct {
   const uint8_t pin;
   const char* description;
+#ifdef MCP23017_SUPPORT
+  const uint8_t i2cAddress;
+#endif
   bool currentState;
 } tRelay;
 

@@ -4,6 +4,8 @@
 #include "database_types.h"
 #include "callbacks.h"
 
+#define MCP_COUNT_ON_I2C 4
+
 /*
 problemy: 
 26 pin tj switch toaleta nie wykrywa stanu wysokiego
@@ -312,10 +314,11 @@ static tLightSwitch m_lights[] =
     .relayId = RELAY_DZIECKO_2,
   },
   { // SWITCH_GARAZ
-    .pin = A0,
+    .pin = 0,
     .description = "WlacznikGaraz",
     .relayId = RELAY_GARAZ,
     .inactive = false,
+    .i2cAddress = 0x21,
     .longPressCallback = &garageLongPress,
   },
   { // SWITCH_PRALNIA

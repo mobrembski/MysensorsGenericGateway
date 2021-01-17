@@ -1,3 +1,6 @@
 [submodule "lib/MySensors"]
 	path = lib/MySensors
 	url = git@github.com:mobrembski/MySensors.git
+[submodule "lib/Bounce2mcp"]
+	path = lib/Bounce2mcp
+	url = https://github.com/cosmikwolf/Bounce2mcp.git

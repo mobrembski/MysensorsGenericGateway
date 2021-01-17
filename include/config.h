@@ -38,3 +38,9 @@
 #endif /* MY_GATEWAY_MQTT_CLIENT */
 
 #define STANDALONE_MODE
+/* Uncomment if you wish to add MCP GPIO I2C adapters support */
+#define MCP23017_SUPPORT
+/* Uncomment if you wish to add BME280 support */
+//#define BME280_SUPPORT
+/* Uncomment if you wish to scan I2C Bus for devices on startup */
+#define I2C_SCANNER_SUPPORT
