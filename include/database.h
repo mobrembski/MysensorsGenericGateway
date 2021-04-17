@@ -6,83 +6,6 @@
 
 #define MCP_COUNT_ON_I2C 4
 
-/*
-problemy: 
-26 pin tj switch toaleta nie wykrywa stanu wysokiego
-21 pin nie zmienia stanu, dlaczego?
-20 pin stan wysoki to ok 0.9V dlaczego?
-10 pin zajęty przez ethernet trzeba zmienic
-
-Wyjścia:
-1. Korytarz parter brązowy pin 42
-2. Korytarz parter czarny pin 41
-3. Przedpokój brązowy pin 40
-4. Korytarz piętro brązowy pin 39 
-5. Korytarz piętro czarny pin 38
-6. (Schody kinkiety?) pin 37
-7. (Schody ledy?) pin 36
-8. Salon 1 brązowy pin 35
-9. Salon 1 czarny pin 34
-10. Salon 2 brązowy pin 33
-11. Salon 2 czarny pin 32
-12. (kinkiety brązowe?) pin 31 
-13. Kuchnia brązowy pin 22
-14. (Kuchnia czarny?) pin 21
-15. (Kuchnia kinkiet?) pin 20
-16. (Gabinet brązowy?) pin 19
-17. (Gabinet czarny?) pin 18
-18. Sypialnia brązowy pin 17
-19. Sypialnia czarny pin 16
-20. Dziecko brązowy pin 15
-21. Dziecko czarny pin 14
-22. Toaleta parter pin 2
-23. (Łazienka brązowy?) pin 3 
-24. (Łazienka czarny?) pin 4
-25. (Ośw ganek?) pin 43
-26. (Ośw przód domu?) pin 44 
-27. (Ośw balkon?) pin 45
-28. (ośw balkon?) pin 46
-29. Piwnica pin 47
-30. Pralnia pin 48
-31. Garaż pin 49
-32. Ogród pin 50
-piny 51 52 i 53 podłączone do wyjść 33,34,35 nie wykorzystane
-Wyjście 36 podłączone do niebieskiego, nie podłączone do płytki
-Wejścia:
-1. Ganek (przedpokój czarny) pin 30
-2. Piwnica (przedpokój szary) pin 29
-3. Przedpokój (przedpokój niebieski) pin 28
-4. Korytarz parter (niebieski) pin 27
-5. Toaleta parter (niebieski) pin 26
-6. Kuchnia niebieski pin 25
-7. Kucnia Czarny pin 24
-8. Kuchnia szary pin 23
-9. Salon 1 niebieski pin 6 
-10. Salon 1 Czarny pin 7
-11. Salon 2 niebieski pin 8 
-12. Salon 2 czarny pin 9
-13. Salon kinkiet niebieski pin 10
-14. Schody dół niebieski pin 11
-15. Schody dół czarny pin 12
-16. Schody góra niebieski pin 13 
-17. Schody góra 2 czarny pin A14
-18. Schody góra szary pin A13
-19. Schody góra 2 niebieski pin A12
-20. Schody góra czarny pin A11
-21. Sypialnia niebieski pin A10
-22. Sypialnia czarny pin A09
-23. Taras niebieski pin A08
-24. Taras czarny pin A07
-25. Gabinet niebieski pin A06
-26. Gabinet czarny pin A05
-27. Łazienka niebieski pin A04
-28. Łazienka czarny pin A03
-29. Dziecko niebieski pin A02
-30. Dziecko czarny pin A01
-31. Garaż pin A0
-32. Pralnia pin A15
-*/
-
 typedef enum {
   SWITCH_WEJSCIE = 0,  // 1 Pojedynczy /30
   SWITCH_PIWNICA,      // 2 Pojedynczy /29
@@ -161,167 +84,214 @@ typedef enum {
 
 static tLightSwitch m_lights[] =
 {
-  { // SWITCH_WEJSCIE
-    .pin = 30,
+  [SWITCH_WEJSCIE] =
+  {
+    .pin = 15,
     .description = "WlacznikGanek",
     .relayId = RELAY_WEJSCIE,
+    .inactive = false,
+    .i2cAddress = 0x20,
   },
-  { // SWITCH_PIWNICA
-    .pin = 29,
+  [SWITCH_PIWNICA] =
+  {
+    .pin = 14,
     .description = "WlacznikPiwnica",
     .relayId = RELAY_PIWNICA,
+    .inactive = false,
+    .i2cAddress = 0x20,
   },
-  { // SWITCH_PRZEDPOKOJ
-    .pin = 28,
+  [SWITCH_PRZEDPOKOJ] =
+  {
+    .pin = 13,
     .description = "WlacznikPrzedpokoj",
     .relayId = RELAY_PRZEDPOKOJ,
+    .inactive = false,
+    .i2cAddress = 0x20,
   },
-  { // SWITCH_KOR_PARTER
-    .pin = 27,
+  [SWITCH_KOR_PARTER] =
+  {
+    .pin = 12,
     .description = "WlacznikKorParter",
     .relayId = RELAY_KOR_PARTER_1,
+    .inactive = false,
+    .i2cAddress = 0x20,
   },
-  { // SWITCH_TOALETA
-    .pin = 26,
+  [SWITCH_TOALETA] =
+  {
+    .pin = 11,
     .description = "WlacznikToaleta",
     .relayId = RELAY_TOALETA,
     .inactive = false,
+    .i2cAddress = 0x20,
   },
-  { // SWITCH_KUCHNIA_1
-    .pin = 25,
+  [SWITCH_KUCHNIA_1] =
+  {
+    .pin = 10,
     .description = "WlacznikKuchnia1",
     .relayId = RELAY_KUCHNIA_1,
+    .inactive = false,
+    .i2cAddress = 0x20,
   },
-  { // SWITCH_KUCHNIA_2
-    .pin = 24,
+  [SWITCH_KUCHNIA_2] =
+  {
+    .pin = 9,
     .description = "WlacznikKuchnia2",
     .relayId = RELAY_KUCHNIA_2,
+    .inactive = false,
+    .i2cAddress = 0x20,
   },
-  { // SWITCH_KUCHNIA_LED
-    .pin = 23,
+  [SWITCH_KUCHNIA_LED] =
+  {
+    .pin = 8,
     .description = "WlacznikKuchniaLED",
     .relayId = RELAY_KUCHNIA_LED,
+    .inactive = false,
+    .i2cAddress = 0x20,
   },
-  { // SWITCH_SALON1_1
+  [SWITCH_SALON2_1] = 
+  {
     .pin = 6,
     .description = "WlacznikSalon11",
     .relayId = RELAY_SALON1_1,
   },
-  { // SWITCH_SALON1_2
+  [SWITCH_SALON1_2] =
+  {
     .pin = 7,
     .description = "WlacznikSalon12",
     .relayId = RELAY_SALON1_2,
   },
-  { // SWITCH_SALON2_1
+  [SWITCH_SALON2_1] =
+  {
     .pin = 8,
     .description = "WlacznikSalon21",
     .relayId = RELAY_SALON2_1,
   },
-  { // SWITCH_SALON2_2
+  [SWITCH_SALON2_2] =
+  {
     .pin = 9,
     .description = "WlacznikSalon22",
     .relayId = RELAY_SALON2_2,
   },
-  { // SWITCH_SALON_KINKIETY
+  [SWITCH_SALON_KINKIETY] =
+  {
     .pin = 10,
     .description = "WlacznikSalonKinkiety",
     .relayId = RELAY_SALON_KINKIETY,
     .inactive = true,
   },
-  { // SWITCH_SCHODY
+  [SWITCH_SCHODY] =
+  {
     .pin = 11,
     .description = "WlacznikSchody",
     .relayId = RELAY_SCHODY,
   },
-  { // SWITCH_SCHODY_KINKIETY
+  [SWITCH_SCHODY_KINKIETY] =
+  {
     .pin = 12,
     .description = "WlacznikSchodyKinkiety",
     .relayId = RELAY_SCHODY_KINKIETY,
   },
-  { // SWITCH_SCHODY_GORA
+  [SWITCH_SCHODY_GORA] =
+  {
     .pin = 13,
     .description = "WlacznikSchodyGora",
     .relayId = RELAY_SCHODY,
   },
-  { // SWITCH_SCHODY_GORA_KINKIETY
+  [SWITCH_SCHODY_GORA_KINKIETY] =
+  {
     .pin = A14,
     .description = "WlacznikSchodyGoraKinkiety",
     .relayId = RELAY_SCHODY_KINKIETY,
   },
-  { // SWITCH_BALKON
+  [SWITCH_BALKON] =
+  {
     .pin = A13,
     .description = "WlacznikBalkon",
     .relayId = RELAY_BALKON,
   },
-  { // SWITCH_KOR_PIETRO
+  [SWITCH_KOR_PIETRO] =
+  {
     .pin = A12,
     .description = "WlacznikKorPietro",
     .relayId = RELAY_KOR_PIETRO_1,
   },
-  { // SWITCH_KOR_PIETO_NOCNE
+  [SWITCH_KOR_PIETRO_NOCNE] =
+  {
     .pin = A11,
     .description = "WlacznikKorPietroNocne",
     .relayId = RELAY_KOR_PIETRO_2,
   },
-  { // SWITCH_SYPIALNIA_1
+  [SWITCH_SYPIALNIA_1] =
+  {
     .pin = A10,
     .description = "WlacznikSypialnia1",
     .relayId = RELAY_SYPIALNIA_1,
   },
-  { // SWITCH_SYPIALNIA_2
+  [SWITCH_SYPIALNIA_2] =
+  {
     .pin = A9,
     .description = "WlacznikSypialnia2",
     .relayId = RELAY_SYPIALNIA_2,
   },
-  { // SWITCH_TARAS
+  [SWITCH_TARAS] =
+  {
     .pin = A8,
     .description = "WlacznikTaras",
     .relayId = RELAY_TARAS,
   },
-  { // SWITCH_OGROD
+  [SWITCH_OGROD] =
+  {
     .pin = A7,
     .description = "WlacznikOgrod",
     .relayId = RELAY_OGROD,
   },
-  { // SWITCH_GABINET_1
+  [SWITCH_GABINET_1] =
+  {
     .pin = A6,
     .description = "WlacznikGabinet1",
     .relayId = RELAY_GABINET_1,
   },
-  { // SWITCH_GABINET_2
+  [SWITCH_GABINET_2] =
+  {
     .pin = A5,
     .description = "WlacznikGabinet2",
     .relayId = RELAY_GABINET_2,
   },
-  { // SWITCH_LAZIENKA
+  [SWITCH_LAZIENKA] =
+  {
     .pin = A4,
     .description = "WlacznikLazienka",
     .relayId = RELAY_LAZIENKA_1,
   },
-  { // SWITCH_LAZIENKA_2
+  [SWITCH_LAZIENKA_2] =
+  {
     .pin = A3,
     .description = "WlacznikLazienka2",
     .relayId = RELAY_LAZIENKA_2,
   },
-  { // SWITCH_DZIECKO_1
+  [SWITCH_DZIECKO_1] =
+  {
     .pin = A2,
     .description = "WlacznikDziecko1",
     .relayId = RELAY_DZIECKO_1,
   },
-  { // SWITCH_DZIECKO_2
+  [SWITCH_DZIECKO_2] =
+  {
     .pin = A1,
     .description = "WlacznikDziecko2",
     .relayId = RELAY_DZIECKO_2,
   },
-  { // SWITCH_GARAZ
-    .pin = 0,
+  [SWITCH_GARAZ] =
+  {
+    .pin = A0,
     .description = "WlacznikGaraz",
     .relayId = RELAY_GARAZ,
     .inactive = false,
-    .i2cAddress = 0x21,
+    .i2cAddress = 0x00,
     .longPressCallback = &garageLongPress,
   },
-  { // SWITCH_PRALNIA
+  [SWITCH_PRALNIA] =
+  {
     .pin = A15,
     .description = "WlacznikPralnia",
     .relayId = RELAY_KOTLOWNIA,
@@ -330,135 +300,170 @@ static tLightSwitch m_lights[] =
 
 static tRelay m_relays[] =
 {
-  { // RELAY_KOR_PARTER_1
-    .pin = 42,
+  [RELAY_KOR_PARTER_1] =
+  {
+    .pin = 0,
     .description = "SwiatloKorParter1",
+    .i2cAddress = 0x20,
   },
-  { // RELAY_KOR_PARTER_2
+  [RELAY_KOR_PARTER_2] =
+  {
     .pin = 41,
     .description = "SwiatloKorParter2",
   },
-  { // RELAY_PRZEDPOKOJ
-    .pin = 40,
+  [RELAY_PRZEDPOKOJ] =
+  {
+    .pin = 2,
     .description = "SwiatloPrzedpokoj",
+    .i2cAddress = 0x20,
   },
-  { // RELAY_KOR_PIETRO_1
+  [RELAY_KOR_PIETRO_1] =
+  {
     .pin = 39,
     .description = "SwiatloKorPietro1",
   },
-  { // RELAY_KOR_PIETRO_2
+  [RELAY_KOR_PIETRO_2] =
+  {
     .pin = 38,
     .description = "SwiatloKorPietro2",
   },
-  { // RELAY_SCHODY_KINKIETY
+  [RELAY_SCHODY_KINKIETY] =
+  {
     .pin = 37,
     .description = "SwiatloSchodyKinkiety",
   },
-  { // RELAY_SCHODY
+  [RELAY_SCHODY] =
+  {
     .pin = 36,
     .description = "SwiatloSchody",
   },
-  { // RELAY_SALON1_1
+  [RELAY_SALON1_1] =
+  {
     .pin = 35,
     .description = "SwiatloSalon11",
   },
-  { // RELAY_SALON1_2
+  [RELAY_SALON1_2] =
+  {
     .pin = 34,
     .description = "SwiatloSalon12",
   },
-  { // RELAY_SALON2_1
+  [RELAY_SALON2_1] =
+  {
     .pin = 33,
     .description = "SwiatloSalon21",
   },
-  { // RELAY_SALON2_2
+  [RELAY_SALON2_2] =
+  {
     .pin = 32,
     .description = "SwiatloSalon22",
   },
-  { // RELAY_SALON_KINKIETY
+  [RELAY_SALON_KINKIETY] =
+  {
     .pin = 31,
     .description = "SwiatloSalonKinkiety",
   },
-  { // RELAY_KUCHNIA_1
+  [RELAY_KUCHNIA_1] =
+  {
     .pin = 22,
     .description = "SwiatloKuchnia1",
   },
-  { // RELAY_KUCHNIA_2
+  [RELAY_KUCHNIA_2] =
+  {
     .pin = 21,
     .description = "SwiatloKuchnia2",
   },
-  { // RELAY_KUCHNIA_LED
+  [RELAY_KUCHNIA_LED] =
+  {
     .pin = 20,
     .description = "SwiatloKuchniaLED",
   },
-  { // RELAY_GABINET_1
+  [RELAY_GABINET_1] =
+  {
     .pin = 19,
     .description = "SwiatloGabinet1",
   },
-  { // RELAY_GABINET_2
+  [RELAY_GABINET_2] =
+  {
     .pin = 18,
     .description = "SwiatloGabinet2",
   },
-  { // RELAY_SYPIALNIA_1
+  [RELAY_SYPIALNIA_1] =
+  {
     .pin = 17,
     .description = "SwiatloSypialnia1",
   },
-  { // RELAY_SYPIALNIA_2
+  [RELAY_SYPIALNIA_2] =
+  {
     .pin = 16,
     .description = "SwiatloSypialnia2",
   },
-  { // RELAY_DZIECKO_1
+  [RELAY_DZIECKO_1] =
+  {
     .pin = 15,
     .description = "SwiatloDziecko1",
   },
-  { // RELAY_DZIECKO_2
+  [RELAY_DZIECKO_2] =
+  {
     .pin = 14,
     .description = "SwiatloDziecko2",
   },
-  { // RELAY_TOALETA
+  [RELAY_TOALETA] =
+  {
     .pin = 2,
     .description = "SwiatloToaleta",
   },
-  { // RELAY_LAZIENKA_1
+  [RELAY_LAZIENKA_1] =
+  {
     .pin = 3,
     .description = "SwiatloLazienka1",
   },
-  { // RELAY_LAZIENKA_2
+  [RELAY_LAZIENKA_2] =
+  {
     .pin = 4,
     .description = "SwiatloLazienka2",
   },
-  { // RELAY_WEJSCIE
+  [RELAY_WEJSCIE] =
+  {
     .pin = 43,
     .description = "SwiatloWejscie",
   },
-  { // RELAY_ULICA
+  [RELAY_ULICA] =
+  {
     .pin = 44,
     .description = "SwiatloUlica",
   },
-  { // RELAY_BALKON
+  [RELAY_BALKON] =
+  {
     .pin = 46,
     .description = "SwiatloBalkon",
   },
-  { // RELAY_TARAS
+  [RELAY_TARAS] =
+  {
     .pin = 45,
     .description = "SwiatloTaras",
   },
-  { // RELAY_PIWNICA
+  [RELAY_PIWNICA] =
+  {
     .pin = 47,
     .description = "SwiatloPiwnica",
   },
-  { // RELAY_KOTLOWNIA
+  [RELAY_KOTLOWNIA] =
+  {
     .pin = 48,
     .description = "SwiatloPralnia",
   },
-  { // RELAY_GARAZ
+  [RELAY_GARAZ] =
+  {
     .pin = 49,
     .description = "SwiatloGaraż",
   },
-  { // RELAY_LAZIENKA_NOCNE
+  [RELAY_OGROD] =
+  {
     .pin = 50,
     .description = "SwiatloOgrod",
   },
-  { // RELAY_LAZIENKA_NOCNE
+  [RELAY_LAZIENKA_NOCNE] =
+  {
     .pin = 51,
     .description = "SwiatloLazienkaNocne",
   }
