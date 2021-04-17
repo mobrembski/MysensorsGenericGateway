@@ -44,3 +44,6 @@
 //#define BME280_SUPPORT
 /* Uncomment if you wish to scan I2C Bus for devices on startup */
 #define I2C_SCANNER_SUPPORT
+
+/* Uncomment if you want to use database for development board */
+#define DEVELOPER_BOARD
