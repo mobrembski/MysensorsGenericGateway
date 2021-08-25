@@ -7,7 +7,7 @@
 #include <SPI.h>                                  // A communication backbone, the Serial Peripheral Interface.
 #include <Ethernet.h>                             // Ethernet library
 #include <MySensors.h>                            // The MySensors library. Hurray!
-#include <Wire.h>                                 // Enables the Wire communication protocol.
+//#include <Wire.h>                                 // Enables the Wire communication protocol.
 #include <Bounce2.h>
 
 #define MAX_UART_BUF_LEN          100             // UART Maxium buffer length
@@ -66,7 +66,7 @@ void configurePins() {
 }
 
 void setup() {
-  Wire.begin(); // Wire.begin(sda, scl) // starts the wire communication protocol, used to chat with the BME280 sensor.
+  //Wire.begin(); // Wire.begin(sda, scl) // starts the wire communication protocol, used to chat with the BME280 sensor.
   Serial.begin(115200); // for serial debugging over USB.
   printUart("Hello %s!", MY_HOSTNAME );
   configurePins();
