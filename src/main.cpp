@@ -18,8 +18,8 @@
 #define noEvent                   0               // Return value for checkButton when no event occurs
 #define shortPress                1               // Return value for checkButton when short press occurs
 #define longPress                 2               // Return value for checkButton when long press occurs
-#define shortTime                 250             // Button press time in ms for short press
-#define longTime                  800             // Button press time in ms for long press
+#define shortTime                 800             // Button press time in ms for short press
+#define longTime                  1200             // Button press time in ms for long press
 
 
 static Bounce debouncers[SWITCH_MAX_ID];
