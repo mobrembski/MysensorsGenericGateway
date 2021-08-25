@@ -106,7 +106,6 @@ byte checkButton(tLightSwitch* light, Bounce* button)
   // Button press transition from LOW to HIGH)
   if (button->rose())
   {
-    printUart("Rose");
     light->buttonPressStartTimeStamp = millis();
     light->startTimeout = true;
   }
@@ -114,8 +113,8 @@ byte checkButton(tLightSwitch* light, Bounce* button)
   // Button release transition from HIGH to LOW) :
   if (button->fell())
   {
-    printUart("fell");
     light->buttonPressDuration = (millis() - light->buttonPressStartTimeStamp);
+    printUart("Button %s press duration %u ms", light->description, light->buttonPressDuration);
     light->startTimeout = false;
   }
 
@@ -130,6 +129,7 @@ byte checkButton(tLightSwitch* light, Bounce* button)
     event = longPress;
     light->startTimeout = false;
     light->buttonPressDuration = 0;
+    printUart("Button %s press timeout", light->description);
   }
   return event;
 }
@@ -170,11 +170,11 @@ void loop() {
       switch(buttonEvent)
       {
         case shortPress:
-          printUart( "Button %d %s pressed...", i, SWITCH_DESCRIPTIONS[(uint16_t) i] );
+          printUart( "Button %d %s pressed...", i, light->description );
           light->currentState = !light->currentState;
           break;
         case longPress:
-          printUart( "Button %d %s long pressed...", i, SWITCH_DESCRIPTIONS[(uint16_t) i] );
+          printUart( "Button %d %s long pressed...", i, light->description );
           if( light->longPressCallback != NULL )
           {
             light->longPressCallback();
