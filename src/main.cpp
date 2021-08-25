@@ -170,14 +170,18 @@ void loop() {
       switch(buttonEvent)
       {
         case shortPress:
-          printUart( "Button %d %s pressed...", i, light->description );
+          printUart( "Button %d %s pressed...", i, SWITCH_DESCRIPTIONS[(uint16_t) i] );
           light->currentState = !light->currentState;
           break;
         case longPress:
-          printUart( "Button %d %s long pressed...", i, light->description );
+          printUart( "Button %d %s long pressed...", i, SWITCH_DESCRIPTIONS[(uint16_t) i] );
           if( light->longPressCallback != NULL )
           {
             light->longPressCallback();
+          }
+          else /* If no long press, then behave like normal click */
+          {
+            light->currentState = !light->currentState;
           }
           break;
       }
