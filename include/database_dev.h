@@ -34,7 +34,7 @@ static tLightSwitch m_lights[] =
 {
     [SWITCH_1] =
     {
-        .pin = 15,
+        .pin = 1,
         .description = "Switch1",
         .relayId = RELAY_1,
         .inactive = false,
@@ -50,7 +50,7 @@ static tLightSwitch m_lights[] =
     },
     [SWITCH_3] =
     {
-        .pin = 13,
+        .pin = 0,
         .description = "Switch3",
         .relayId = RELAY_3,
         .inactive = false,
@@ -58,7 +58,7 @@ static tLightSwitch m_lights[] =
     },
     [SWITCH_4] =
     {
-        .pin = 12,
+        .pin = 15,
         .description = "Switch4",
         .relayId = RELAY_4,
         .inactive = false,
@@ -70,7 +70,6 @@ static tLightSwitch m_lights[] =
         .description = "Switch5",
         .relayId = RELAY_5,
         .inactive = false,
-        .i2cAddress = 0x20,
     },
     [SWITCH_6] =
     {
@@ -78,7 +77,6 @@ static tLightSwitch m_lights[] =
         .description = "Switch6",
         .relayId = RELAY_6,
         .inactive = false,
-        .i2cAddress = 0x20,
     },
     [SWITCH_7] =
     {
@@ -86,7 +84,6 @@ static tLightSwitch m_lights[] =
         .description = "Switch7",
         .relayId = RELAY_7,
         .inactive = false,
-        .i2cAddress = 0x20,
     },
     [SWITCH_OGROD] =
     {
@@ -94,7 +91,6 @@ static tLightSwitch m_lights[] =
         .description = "Switch8",
         .relayId = RELAY_8,
         .inactive = false,
-        .i2cAddress = 0x20,
     }
 };
 
@@ -102,49 +98,49 @@ static tRelay m_relays[] =
 {
     [RELAY_1] =
     {
-        .pin = 0,
+        .pin = 7,
         .description = "Relay1",
         .i2cAddress = 0x20,
     },
     [RELAY_2] =
     {
-        .pin = 1,
+        .pin = 8,
         .description = "Relay2",
         .i2cAddress = 0x20,
     },
     [RELAY_3] =
     {
-        .pin = 2,
+        .pin = 6,
         .description = "Relay3",
         .i2cAddress = 0x20,
     },
     [RELAY_4] =
     {
-        .pin = 3,
+        .pin = 9,
         .description = "Relay4",
         .i2cAddress = 0x20,
     },
     [RELAY_5] =
     {
-        .pin = 4,
+        .pin = 5,
         .description = "Relay5",
         .i2cAddress = 0x20,
     },
     [RELAY_6] =
     {
-        .pin = 5,
+        .pin = 10,
         .description = "Relay6",
         .i2cAddress = 0x20,
     },
     [RELAY_7] =
     {
-        .pin = 6,
+        .pin = 4,
         .description = "Relay7",
         .i2cAddress = 0x20,
     },
     [RELAY_8] =
     {
-        .pin = 7,
+        .pin = 11,
         .description = "Relay8",
         .i2cAddress = 0x20,
     }

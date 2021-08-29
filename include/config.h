@@ -46,4 +46,4 @@
 #define I2C_SCANNER_SUPPORT
 
 /* Uncomment if you want to use database for development board */
-#define DEVELOPER_BOARD
+//#define DEVELOPER_BOARD
