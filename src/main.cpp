@@ -471,7 +471,6 @@ void loop() {
     tLightSwitch* light = &m_lights[i];
     if( !light->inactive )
     {
-      tRelay* relay = &m_relays[light->relayId];
       BouncerAdaptor* debouncer = debouncers[i];
       byte buttonEvent = checkButton(light, debouncer);
       switch(buttonEvent)
@@ -493,7 +492,11 @@ void loop() {
           break;
       }
 #ifdef STANDALONE_MODE
-      switchRelayForLight(relay, light);
+      if( light->relayId != RELAY_MAX_ID )
+      {
+        tRelay* relay = &m_relays[light->relayId];
+        switchRelayForLight(relay, light);
+      }
 #endif
     }
   }

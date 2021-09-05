@@ -22,8 +22,8 @@ typedef enum {
   SWITCH_SALON_KINKIETY,// 13 Pojedynczy /10 - NOK Do Zmiany! zajęte przez SPI EN
   SWITCH_SCHODY,       // 14 Pojedynczy /11
   SWITCH_SCHODY_KINKIETY, // 15          /12 OK 6
-  SWITCH_SCHODY_GORA,   // 16            /13 OK 7
-  SWITCH_SCHODY_GORA_KINKIETY, // 17     /A14 OK 6
+  SWITCH_RYGIEL_GORA,   // 16            /13 OK 7
+  SWITCH_RYGIEL_DOL, // 17     /A14 OK 6
   SWITCH_BALKON,       // 18            /A13 OK 27
   SWITCH_KOR_PIETRO,    // 19 Potrojny?  /A12 OK 4
   SWITCH_KOR_PIETRO_NOCNE, // 20          /A11 OK 5 - DO wywalenia?
@@ -194,17 +194,17 @@ static tLightSwitch m_lights[] =
     .description = "WlacznikSchodyKinkiety",
     .relayId = RELAY_SCHODY_KINKIETY,
   },
-  [SWITCH_SCHODY_GORA] =
+  [SWITCH_RYGIEL_GORA] =
   {
     .pin = 35,
-    .description = "WlacznikSchodyGora",
-    .relayId = RELAY_SCHODY,
+    .description = "RygielGora",
+    .relayId = RELAY_MAX_ID,
   },
-  [SWITCH_SCHODY_GORA_KINKIETY] =
+  [SWITCH_RYGIEL_DOL] =
   {
     .pin = A14,
-    .description = "WlacznikSchodyGoraKinkiety",
-    .relayId = RELAY_SCHODY_KINKIETY,
+    .description = "RygielDol",
+    .relayId = RELAY_MAX_ID,
   },
   [SWITCH_BALKON] =
   {
