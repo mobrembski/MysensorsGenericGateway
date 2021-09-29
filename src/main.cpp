@@ -353,7 +353,7 @@ void presentation()  {
   }
 
   // "Inclusion mode for HA"
-  if(digitalRead(m_lights[0].pin) == HIGH)
+  if(digitalRead(m_lights[SWITCH_PRALNIA].pin) == HIGH)
   {
     printUart( "Sending all fake states of relays" );
     for( size_t i = 0; i < m_lights_size; ++i ) {
