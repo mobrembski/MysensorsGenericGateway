@@ -340,12 +340,18 @@ void setup() {
 #endif /* I2C_SCANNER_SUPPORT */
   configureDebouncers();
   printUart("Done configuring all");
+  // Unsure why presentation is not called on startup
+  sendSketchInfo( MY_HOSTNAME, SKETCH_VERSION );
+  for(size_t i = 0; i < m_lights_size; ++i ) {
+    present( i, S_BINARY, m_lights[i].description );
+  }
 }
 
 
 void presentation()  {
   // Send the sketch version information to the gateway and Controller
   sendSketchInfo( MY_HOSTNAME, SKETCH_VERSION );
+  //configurePins();
 
   // Tell the MySensors gateway what kind of sensors this node has, and what their ID's on the node are, as defined in the code above.
   for(size_t i = 0; i < m_lights_size; ++i ) {
