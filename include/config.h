@@ -7,9 +7,10 @@
 #define MY_GATEWAY_SERIAL
 //#define MY_GATEWAY_W5100
 //#define MY_GATEWAY_MQTT_CLIENT
-#define MY_HOSTNAME "MySensorsTest2-Relay1"
+#define MY_HOSTNAME "MySensorsMainGW"
 #define SKETCH_VERSION "1.3"
 //#define USE_STATIC_IP // Uncomment, if you don't want to use DHCP
+#define MY_NODE_ID 1
 
 #ifdef USE_STATIC_IP
 #define MY_IP_ADDRESS 192,168,8,35          // Static IP Address
