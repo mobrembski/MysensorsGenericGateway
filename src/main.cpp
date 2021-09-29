@@ -77,6 +77,7 @@ void configurePins() {
     {
       pinMode( light->pin, INPUT );
       light->message = new MyMessage( i, V_STATUS );
+      light->message->set( 0 );
       light->currentState = 0;
       light->lastState = 0;
     }
@@ -90,7 +91,7 @@ void configurePins() {
     printUart( "Relay %u pin %u %s", i, relay->pin, relay->description );
     pinMode( relay->pin, OUTPUT );
     digitalWrite( relay->pin, 0);
-    if( relay->currentState )
+    if( relay->currentState == 1 )
     {
       //digitalWrite( relay->pin, relay->currentState );
     }
@@ -356,9 +357,9 @@ void presentation()  {
     for( size_t i = 0; i < m_lights_size; ++i ) {
       MyMessage* message = m_lights[i].message;
       send(*message);
-      message->set( true );
+      message->set( 1 );
       send(*message);
-      message->set( false );
+      message->set( 0 );
     }
   }
   printUart( "Presentation done." );
@@ -477,7 +478,9 @@ void loop() {
       {
         case shortPress:
           printUart( "Button %d %s pressed...", i, light->description );
-          light->currentState = !light->currentState;
+          light->currentState = light->currentState == 0 ? 1 : 0;
+          light->message->set(light->currentState);
+          send(*light->message);
           break;
         case longPress:
           printUart( "Button %d %s long pressed...", i, light->description );
@@ -487,7 +490,7 @@ void loop() {
           }
           else /* If no long press, then behave like normal click */
           {
-            light->currentState = !light->currentState;
+            light->currentState = light->currentState == 0 ? 1 : 0;
           }
           break;
       }
@@ -528,17 +531,24 @@ void loop() {
 
 void receive(const MyMessage &message) {
   // We only expect one type of message from controller. But we better check anyway.
-  if( message.type == V_LIGHT ) {
+  if( message.type == V_STATUS ) {
     printUart( "Received update of %d sensor, new value %u", message.sensor, message.getBool() );
     // Switches are read only
-    if( ( message.sensor >= SWITCH_MAX_ID ) &&
+    if( ( message.sensor >= 0 ) &&
       ( message.sensor < m_lights_size ) ) {
       tLightSwitch* light = &m_lights[message.sensor];
       printUart( "Updating light relay %u %s pin: %u, new state: %u", message.sensor, light->description, light->pin, message.getBool() );
-      light->currentState = message.getBool();
+      light->currentState = message.getBool() ? 1 : 0;
+#ifdef STANDALONE_MODE
+      if( light->relayId != RELAY_MAX_ID )
+      {
+        tRelay* relay = &m_relays[light->relayId];
+        switchRelayForLight(relay, light);
+      }
+#endif
       light->message->set( light->currentState );
       printUart( "Sending confirmation of new state" );
       send( *light->message );
     }
-   } 
+  }
 }
