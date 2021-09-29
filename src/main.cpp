@@ -64,8 +64,10 @@ void printUart( const char *format, ...) {
   va_list args;
   va_start( args, format );
   vsprintf( uartBuffer, format, args );
+#ifdef MY_DEBUG
   Serial.print( uartBuffer );
   Serial.print( "\r\n" );
+#endif
   va_end( args );
 }
 
