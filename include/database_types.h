@@ -9,6 +9,8 @@ typedef struct {
   const uint8_t pin;
   const char* description;
   const uint8_t relayId;
+  const mysensors_data_t datatype;
+  const mysensors_sensor_t sensortype;
   const bool inactive;
 #ifdef MCP23017_SUPPORT
   const uint8_t i2cAddress;

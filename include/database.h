@@ -89,6 +89,8 @@ static tLightSwitch m_lights[] =
     .pin = 1,
     .description = "WlacznikGanek",
     .relayId = RELAY_WEJSCIE,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
     .i2cAddress = 0x20,
   },
@@ -97,6 +99,8 @@ static tLightSwitch m_lights[] =
     .pin = 14,
     .description = "WlacznikPiwnica",
     .relayId = RELAY_PIWNICA,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
     .i2cAddress = 0x20,
   },
@@ -105,6 +109,8 @@ static tLightSwitch m_lights[] =
     .pin = 0,
     .description = "WlacznikPrzedpokoj",
     .relayId = RELAY_PRZEDPOKOJ,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
     .i2cAddress = 0x20,
   },
@@ -113,6 +119,8 @@ static tLightSwitch m_lights[] =
     .pin = 15,
     .description = "WlacznikKorParter",
     .relayId = RELAY_KOR_PARTER_1,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
     .i2cAddress = 0x20,
   },
@@ -121,6 +129,8 @@ static tLightSwitch m_lights[] =
     .pin = 42,
     .description = "WlacznikToaleta",
     .relayId = RELAY_TOALETA,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
   },
   [SWITCH_KUCHNIA_1] =
@@ -128,6 +138,8 @@ static tLightSwitch m_lights[] =
     .pin = 41,
     .description = "WlacznikKuchnia1",
     .relayId = RELAY_KUCHNIA_1,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
   },
   [SWITCH_KUCHNIA_2] =
@@ -135,6 +147,8 @@ static tLightSwitch m_lights[] =
     .pin = 40,
     .description = "WlacznikKuchnia2",
     .relayId = RELAY_KUCHNIA_2,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
   },
   [SWITCH_KUCHNIA_LED] =
@@ -142,6 +156,8 @@ static tLightSwitch m_lights[] =
     .pin = 39,
     .description = "WlacznikKuchniaLED",
     .relayId = RELAY_KUCHNIA_LED,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
   },
   [SWITCH_SALON1_1] =
@@ -149,6 +165,8 @@ static tLightSwitch m_lights[] =
     .pin = 1,
     .description = "WlacznikSalon11",
     .relayId = RELAY_SALON1_1,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
     .i2cAddress = 0x21,
   },
@@ -157,6 +175,8 @@ static tLightSwitch m_lights[] =
     .pin = 14,
     .description = "WlacznikSalon12",
     .relayId = RELAY_SALON1_2,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
     .i2cAddress = 0x21,
   },
@@ -165,6 +185,8 @@ static tLightSwitch m_lights[] =
     .pin = 0,
     .description = "WlacznikSalon21",
     .relayId = RELAY_SALON2_2,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
     .i2cAddress = 0x21,
   },
@@ -173,6 +195,8 @@ static tLightSwitch m_lights[] =
     .pin = 15,
     .description = "WlacznikSalon22",
     .relayId = RELAY_SALON2_1,  // SPrawdz!!
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
     .i2cAddress = 0x21,
   },
@@ -181,114 +205,152 @@ static tLightSwitch m_lights[] =
     .pin = 38,
     .description = "WlacznikSalonKinkiety",
     .relayId = RELAY_SALON_KINKIETY,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_SCHODY] =
   {
     .pin = 37,
     .description = "WlacznikSchody",
     .relayId = RELAY_SCHODY,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_SCHODY_KINKIETY] =
   {
     .pin = 36,
     .description = "WlacznikSchodyKinkiety",
     .relayId = RELAY_SCHODY_KINKIETY,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_RYGIEL_GORA] =
   {
     .pin = 35,
     .description = "RygielGora",
     .relayId = RELAY_MAX_ID,
+    .datatype = V_ARMED,
+    .sensortype = S_DOOR,
   },
   [SWITCH_RYGIEL_DOL] =
   {
-    .pin = A14,
+    .pin = 33,
     .description = "RygielDol",
     .relayId = RELAY_MAX_ID,
+    .datatype = V_ARMED,
+    .sensortype = S_DOOR,
   },
   [SWITCH_BALKON] =
   {
     .pin = A13,
     .description = "WlacznikBalkon",
     .relayId = RELAY_BALKON,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_KOR_PIETRO] =
   {
     .pin = A12,
     .description = "WlacznikKorPietro",
     .relayId = RELAY_KOR_PIETRO_1,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_KOR_PIETRO_NOCNE] =
   {
     .pin = A11,
     .description = "WlacznikKorPietroNocne",
     .relayId = RELAY_KOR_PIETRO_2,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_SYPIALNIA_1] =
   {
     .pin = A10,
     .description = "WlacznikSypialnia1",
     .relayId = RELAY_SYPIALNIA_1,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_SYPIALNIA_2] =
   {
     .pin = A9,
     .description = "WlacznikSypialnia2",
     .relayId = RELAY_SYPIALNIA_2,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_TARAS] =
   {
     .pin = A8,
     .description = "WlacznikTaras",
     .relayId = RELAY_TARAS,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_OGROD] =
   {
     .pin = A7,
     .description = "WlacznikOgrod",
     .relayId = RELAY_OGROD,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_GABINET_1] =
   {
     .pin = A6,
     .description = "WlacznikGabinet1",
     .relayId = RELAY_GABINET_1,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_GABINET_2] =
   {
     .pin = A5,
     .description = "WlacznikGabinet2",
     .relayId = RELAY_GABINET_2,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_LAZIENKA] =
   {
     .pin = A4,
     .description = "WlacznikLazienka",
     .relayId = RELAY_LAZIENKA_1,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_LAZIENKA_2] =
   {
     .pin = A3,
     .description = "WlacznikLazienka2",
     .relayId = RELAY_LAZIENKA_2,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_DZIECKO_1] =
   {
     .pin = A2,
     .description = "WlacznikDziecko1",
     .relayId = RELAY_DZIECKO_1,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_DZIECKO_2] =
   {
     .pin = A1,
     .description = "WlacznikDziecko2",
     .relayId = RELAY_DZIECKO_2,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
   [SWITCH_GARAZ] =
   {
     .pin = A0,
     .description = "WlacznikGaraz",
     .relayId = RELAY_GARAZ,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
     .inactive = false,
     .i2cAddress = 0x00,
     .longPressCallback = &garageLongPress,
@@ -298,6 +360,8 @@ static tLightSwitch m_lights[] =
     .pin = A15,
     .description = "WlacznikPralnia",
     .relayId = RELAY_KOTLOWNIA,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
   },
 };
 

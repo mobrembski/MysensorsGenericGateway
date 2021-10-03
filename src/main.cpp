@@ -78,7 +78,7 @@ void configurePins() {
     if( !light->inactive )
     {
       pinMode( light->pin, INPUT );
-      light->message = new MyMessage( i, V_STATUS );
+      light->message = new MyMessage( i, light->datatype );
       light->message->set( 0 );
       light->currentState = 0;
       light->lastState = 0;
@@ -343,7 +343,7 @@ void setup() {
   // Unsure why presentation is not called on startup
   sendSketchInfo( MY_HOSTNAME, SKETCH_VERSION );
   for(size_t i = 0; i < m_lights_size; ++i ) {
-    present( i, S_BINARY, m_lights[i].description );
+    present( i, m_lights[i].sensortype, m_lights[i].description );
   }
 }
 
@@ -355,7 +355,7 @@ void presentation()  {
 
   // Tell the MySensors gateway what kind of sensors this node has, and what their ID's on the node are, as defined in the code above.
   for(size_t i = 0; i < m_lights_size; ++i ) {
-    present( i, S_BINARY, m_lights[i].description );
+    present( i, m_lights[i].sensortype, m_lights[i].description );
   }
 
   // "Inclusion mode for HA"
