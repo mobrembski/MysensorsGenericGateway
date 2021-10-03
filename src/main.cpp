@@ -40,11 +40,19 @@
 #define longPress                 2               // Return value for checkButton when long press occurs
 #define shortTime                 800             // Button press time in ms for short press
 #define longTime                  1200             // Button press time in ms for long press
+#define NIGHTLIGHT_DIMMER_ID      SWITCH_MAX_ID + 1
+#define STAIRWAY_DIMMER_ID        SWITCH_MAX_ID + 2
+#define LIGHT_OFF 0
+#define LIGHT_ON 1
 
 static BouncerAdaptor* debouncers[SWITCH_MAX_ID];
 static char uartBuffer[MAX_UART_BUF_LEN];
 unsigned long m_lights_send_interval = PERIODIC_LIGHT_INTERVAL;
 static bool m_i2c_hasDevices;
+static uint8_t m_nightlight_value;
+static uint8_t m_stairway_value;
+static uint8_t m_nightlight_last_state;
+static uint8_t m_stairway_last_state;
 
 #ifdef MCP23017_SUPPORT
 static Adafruit_MCP23017 mcpAdapter[MCP_COUNT_ON_I2C];
@@ -69,6 +77,24 @@ void printUart( const char *format, ...) {
   Serial.print( "\r\n" );
 #endif
   va_end( args );
+}
+
+static inline void setupDimmers()
+{
+  pinMode( NIGHTLIGHT_DIMM_PIN, OUTPUT );
+  pinMode( STAIRWAY_DIMM_PIN, OUTPUT );
+  m_nightLight_status.setType( V_STATUS );
+  m_nightLight_status.set( 0 );
+  m_nightLight_status.setSensor( NIGHTLIGHT_DIMMER_ID );
+  m_nightLight_dimmer.setType( V_PERCENTAGE );
+  m_nightLight_dimmer.set( 0 );
+  m_nightLight_dimmer.setSensor( NIGHTLIGHT_DIMMER_ID );
+  m_stairway_status.setType( V_STATUS );
+  m_stairway_status.set( 0 );
+  m_stairway_status.setSensor( STAIRWAY_DIMMER_ID );
+  m_stairway_dimmer.setType( V_PERCENTAGE );
+  m_stairway_dimmer.set( 0 );
+  m_stairway_dimmer.setSensor( STAIRWAY_DIMMER_ID );
 }
 
 void configurePins() {
@@ -98,6 +124,7 @@ void configurePins() {
       //digitalWrite( relay->pin, relay->currentState );
     }
   }
+  setupDimmers();
 }
 
 void configureDebouncers() {
@@ -345,6 +372,8 @@ void setup() {
   for(size_t i = 0; i < m_lights_size; ++i ) {
     present( i, m_lights[i].sensortype, m_lights[i].description );
   }
+  present( NIGHTLIGHT_DIMMER_ID, S_DIMMER, "OswNocne" );
+  present( STAIRWAY_DIMMER_ID, S_DIMMER, "OswNocneKoryt" );
 }
 
 
@@ -536,6 +565,10 @@ void loop() {
           tLightSwitch* light = &m_lights[i];
           send( *light->message );
       }
+      send( m_nightLight_status );
+      send( m_nightLight_dimmer );
+      send( m_stairway_status );
+      send( m_stairway_dimmer );
       printUart("End of periodic send of Light state...");
   }
 
@@ -553,10 +586,109 @@ void loop() {
 #endif
 } // end of main loop.
 
+inline void send_stairway_dimmer_message()
+{
+  send( m_stairway_dimmer.set( m_stairway_value ) );
+}
+
+inline void send_stairway_status_message()
+{
+  send( m_stairway_status.set(
+    m_stairway_last_state == LIGHT_OFF ? ( int16_t ) ( 0 ) : ( int16_t ) ( 1 ) )
+  );
+}
+
+inline void send_nightlight_dimmer_message()
+{
+  send( m_nightLight_dimmer.set( m_nightlight_value ) );
+}
+
+inline void send_nightlight_status_message()
+{
+  send( m_nightLight_status.set( 
+    m_nightlight_last_state == LIGHT_OFF ? ( int16_t ) ( 0 ) : ( int16_t ) ( 1 ) )
+  );
+}
+
+void processDimmers( const MyMessage &message )
+{
+  if( message.sensor == STAIRWAY_DIMMER_ID ) {
+    if( message.type == V_STATUS ) {
+      int lstate = message.getInt();
+      if (( lstate < 0 ) || ( lstate > 1 )) {
+        printUart( "V_STATUS data for stairway invalid (should be 0/1)" );
+        return;
+      }
+      m_stairway_last_state = lstate;
+
+      //If last dimmer state is zero, set dimmer to 100
+      if (( m_stairway_last_state == LIGHT_ON ) && ( m_stairway_value == 0 )) {
+        m_stairway_value = 100;
+      }
+      send_stairway_status_message();
+    }
+    if( message.type == V_PERCENTAGE ) {
+      printUart( "V_PERCENTAGE command received for stairway..." );
+      int dim_value = constrain( message.getInt(), 0, 100 );
+      if ( dim_value == 0 ) {
+        m_stairway_last_state = LIGHT_OFF;
+        analogWrite( STAIRWAY_DIMM_PIN, 0 );
+
+        //Update constroller with dimmer value & status
+        send_stairway_dimmer_message();
+        send_stairway_status_message();
+      } else {
+        m_stairway_last_state = LIGHT_ON;
+        m_stairway_value = dim_value;
+        analogWrite( STAIRWAY_DIMM_PIN, ( int ) ( dim_value / 100. * 255 ) );
+
+        //Update constroller with dimmer value
+        send_stairway_dimmer_message();
+      }
+    }
+  }
+
+  if( message.sensor == NIGHTLIGHT_DIMMER_ID ) {
+    if( message.type == V_STATUS ) {
+      int lstate = message.getInt();
+      if (( lstate < 0 ) || ( lstate > 1 )) {
+        printUart( "V_STATUS data for stairway invalid (should be 0/1)" );
+        return;
+      }
+      m_nightlight_last_state = lstate;
+
+      //If last dimmer state is zero, set dimmer to 100
+      if (( m_nightlight_last_state == LIGHT_ON ) && ( m_nightlight_value == 0 )) {
+        m_nightlight_value = 100;
+      }
+      send_nightlight_status_message();
+    }
+    if( message.type == V_PERCENTAGE ) {
+      printUart( "V_PERCENTAGE command received for stairway..." );
+      int dim_value = constrain( message.getInt(), 0, 100 );
+      if ( dim_value == 0 ) {
+        m_nightlight_last_state = LIGHT_OFF;
+        analogWrite( NIGHTLIGHT_DIMM_PIN, 0 );
+
+        //Update constroller with dimmer value & status
+        send_nightlight_dimmer_message();
+        send_nightlight_status_message();
+      } else {
+        m_nightlight_last_state = LIGHT_ON;
+        m_nightlight_value = dim_value;
+        analogWrite( NIGHTLIGHT_DIMM_PIN, ( int ) ( dim_value / 100. * 255 ) );
+
+        //Update constroller with dimmer value
+        send_nightlight_dimmer_message();
+      }
+    }
+  }
+}
+
 void receive(const MyMessage &message) {
   // We only expect one type of message from controller. But we better check anyway.
   if( message.type == V_STATUS ) {
-    printUart( "Received update of %d sensor, new value %u", message.sensor, message.getBool() );
+    printUart( "Received update const MyMessage &messageof %d sensor, new value %u", message.sensor, message.getBool() );
     // Switches are read only
     if( ( message.sensor >= 0 ) &&
       ( message.sensor < m_lights_size ) ) {
@@ -578,4 +710,5 @@ void receive(const MyMessage &message) {
       send( *light->message );
     }
   }
+  processDimmers( message );
 }

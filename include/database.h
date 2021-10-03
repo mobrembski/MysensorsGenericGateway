@@ -5,6 +5,8 @@
 #include "callbacks.h"
 
 #define MCP_COUNT_ON_I2C 4
+#define STAIRWAY_DIMM_PIN 4
+#define NIGHTLIGHT_DIMM_PIN 13
 
 typedef enum {
   SWITCH_WEJSCIE = 0,  // 1 Pojedynczy /30
@@ -567,5 +569,10 @@ static tRelay m_relays[] =
 
 const uint8_t m_lights_size = sizeof( m_lights ) / sizeof( m_lights[0] );
 const uint8_t m_relays_size = sizeof( m_relays ) / sizeof( m_relays[0] );
+
+static MyMessage m_nightLight_dimmer;
+static MyMessage m_stairway_dimmer;
+static MyMessage m_nightLight_status;
+static MyMessage m_stairway_status;
 
 #endif /* DATABASE_H */
