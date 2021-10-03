@@ -471,6 +471,21 @@ void garageLongPress()
   switchRelayForLight(relay, ogrodekLight);
 }
 
+void readRygiels()
+{
+  printUart("Powering on rygiels...");
+  digitalWrite(m_relays[RELAY_ZASIL_RYGIEL].pin, 1 );
+  delay(200);
+  m_lights[SWITCH_RYGIEL_GORA].currentState = digitalRead( m_lights[SWITCH_RYGIEL_GORA].pin ) == LOW ? 1 : 0;
+  m_lights[SWITCH_RYGIEL_DOL].currentState = digitalRead( m_lights[SWITCH_RYGIEL_DOL].pin ) == LOW ? 1 : 0;
+  printUart("Read Rygiel states: GORA: %d, DOL: %d", m_lights[SWITCH_RYGIEL_GORA].currentState, m_lights[SWITCH_RYGIEL_DOL].currentState );
+  m_lights[SWITCH_RYGIEL_GORA].message->set(m_lights[SWITCH_RYGIEL_GORA].currentState);
+  m_lights[SWITCH_RYGIEL_DOL].message->set(m_lights[SWITCH_RYGIEL_DOL].currentState);
+  digitalWrite(m_relays[RELAY_ZASIL_RYGIEL].pin, 0 );
+  send( *m_lights[SWITCH_RYGIEL_GORA].message );
+  send( *m_lights[SWITCH_RYGIEL_DOL].message );
+}
+
 void loop() {
 
   // You should not change these variables:
@@ -515,6 +530,7 @@ void loop() {
   if( ( PERIODIC_LIGHT_SEND ) &&
       ( currentMillis - previousLightMillis >= m_lights_send_interval ) ) {
       printUart("Periodic send of Light state...");
+      readRygiels();
       for( size_t i = 0; i < m_lights_size; ++i ) {
           previousLightMillis = currentMillis;
           tLightSwitch* light = &m_lights[i];
@@ -545,17 +561,20 @@ void receive(const MyMessage &message) {
     if( ( message.sensor >= 0 ) &&
       ( message.sensor < m_lights_size ) ) {
       tLightSwitch* light = &m_lights[message.sensor];
-      printUart( "Updating light relay %u %s pin: %u, new state: %u", message.sensor, light->description, light->pin, message.getBool() );
-      light->currentState = message.getBool() ? 1 : 0;
-#ifdef STANDALONE_MODE
-      if( light->relayId != RELAY_MAX_ID )
-      {
-        tRelay* relay = &m_relays[light->relayId];
-        switchRelayForLight(relay, light);
+      // Dont update relays if there is no relay associate with
+      if( light->relayId != RELAY_MAX_ID ) {
+        printUart( "Updating light relay %u %s pin: %u, new state: %u", message.sensor, light->description, light->pin, message.getBool() );
+        light->currentState = message.getBool() ? 1 : 0;
+  #ifdef STANDALONE_MODE
+        if( light->relayId != RELAY_MAX_ID )
+        {
+          tRelay* relay = &m_relays[light->relayId];
+          switchRelayForLight(relay, light);
+        }
+  #endif
+        light->message->set( light->currentState );
+        printUart( "Sending confirmation of new state" );
       }
-#endif
-      light->message->set( light->currentState );
-      printUart( "Sending confirmation of new state" );
       send( *light->message );
     }
   }

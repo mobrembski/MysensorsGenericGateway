@@ -79,6 +79,7 @@ typedef enum {
   RELAY_GARAZ,            // 49
   RELAY_OGROD,            // 50
   RELAY_LAZIENKA_NOCNE,   // 51
+  RELAY_ZASIL_RYGIEL,
   RELAY_MAX_ID // 32 sztuk
 } relayIds;
 
@@ -556,6 +557,11 @@ static tRelay m_relays[] =
   {
     .pin = 51,
     .description = "SwiatloLazienkaNocne",
+  },
+  [RELAY_ZASIL_RYGIEL] =
+  {
+    .pin = 34,
+    .description = "ZasilanieRygla",
   }
 };
 
