@@ -5,7 +5,7 @@ Main motivation to create this sketch was to create generic sketch which is easi
 expandable if more switches/relays are needed.
 It have following features:
 - Based on MySensors library and PlatformIO
-- Optional Support of MCP2307 I2C GPIO expanders ( with scanning I2C bus )
+- Optional Support of MCP2307 I2C GPIO expanders ( with scanning I2C bus function )
 - Optional Support of MQTT MySensors Ethernet client
 - Support of customizable long press events
 - Supports debouncing
@@ -70,7 +70,7 @@ I think its pretty straight forward. If you want to another switch:
 
 Notes:
 - If you don't want to use MCP adapter (because you have builded without MCP Support in `config.h`, or just want to connect to Arduino GPIO pin), then just
-  set **.i2cAddress** fields in `database.h` for corresponding switch/relay.
+  set **.i2cAddress** fields in `database.h` to 0x00 for corresponding switch/relay.
 - If you wish to use Long press callback, then make sure you've added declaration of your used function inside `callbacks.h`, and definition inside `main.cpp` (or any other translation unit, but just be sure that function is not **static**).
 - There is optional support of BME280, check `config.h`
 - Also, MySensors configuration is also placed in `config.h`. If you don't want to use Ethernet gateway, you may just disable it.
