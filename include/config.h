@@ -3,6 +3,7 @@
 // if you uncomment this, you can get test and debug updates about everything the sensor is doing by using the serial monitor tool.
 #define MY_DEBUG
 //#define MY_DEBUG_OTA
+#define MYSENSORS_DEBUG_PREFIX "0;255;3;0;9;"
 
 #define MY_GATEWAY_SERIAL
 //#define MY_GATEWAY_W5100

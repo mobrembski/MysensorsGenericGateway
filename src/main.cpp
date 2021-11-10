@@ -73,6 +73,7 @@ void printUart( const char *format, ...) {
   va_start( args, format );
   vsprintf( uartBuffer, format, args );
 #ifdef MY_DEBUG
+  Serial.print( MYSENSORS_DEBUG_PREFIX );
   Serial.print( uartBuffer );
   Serial.print( "\r\n" );
 #endif

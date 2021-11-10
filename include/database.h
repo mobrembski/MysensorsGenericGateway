@@ -41,6 +41,7 @@ typedef enum {
   SWITCH_DZIECKO_2,    // 30 Podwojny   /A1 OK 21
   SWITCH_GARAZ,        // 31            /A0 OK 31
   SWITCH_PRALNIA,      // 32            /A15 OK 30 
+  SWITCH_ULICA,        // DUMMY - tylko do smarthome
   SWITCH_MAX_ID        // 28 sztuk
 } switchIds;
 
@@ -363,6 +364,14 @@ static tLightSwitch m_lights[] =
     .pin = A15,
     .description = "WlacznikPralnia",
     .relayId = RELAY_KOTLOWNIA,
+    .datatype = V_LIGHT,
+    .sensortype = S_BINARY,
+  },
+  [SWITCH_ULICA] =
+  {
+    .pin = 32,
+    .description = "WlacznikUlica",
+    .relayId = RELAY_ULICA,
     .datatype = V_LIGHT,
     .sensortype = S_BINARY,
   },
