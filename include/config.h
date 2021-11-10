@@ -35,10 +35,11 @@
 #define MY_PORT 1883
 #define MY_MQTT_USER "mqtt"
 #define MY_MQTT_PASSWORD "666mqtt"
-// Dla SPI - 10,50, 51, 52 - trzeba zaaktualizować
+// For EasySwitch Mega Board SPI_EN - 10, 50, 51, 52
 #define MY_W5100_SPI_EN 10
 #endif /* MY_GATEWAY_MQTT_CLIENT */
 
+/* Standalone mode means that device will switch the light without waiting for response from HA. */
 #define STANDALONE_MODE
 /* Uncomment if you wish to add MCP GPIO I2C adapters support */
 #define MCP23017_SUPPORT

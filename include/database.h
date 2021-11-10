@@ -4,86 +4,83 @@
 #include "database_types.h"
 #include "callbacks.h"
 
-#define MCP_COUNT_ON_I2C 4
-#define STAIRWAY_DIMM_PIN 4
-#define NIGHTLIGHT_DIMM_PIN 13
+#define MCP_COUNT_ON_I2C 4      /* Nuber of MCPs connected to board */
+#define STAIRWAY_DIMM_PIN 4     /* Dimmable pin used for stairway brightness control */
+#define NIGHTLIGHT_DIMM_PIN 13  /* Dimmable pin used for night light brightness control */
 
 typedef enum {
-  SWITCH_WEJSCIE = 0,  // 1 Pojedynczy /30
-  SWITCH_PIWNICA,      // 2 Pojedynczy /29
-  SWITCH_PRZEDPOKOJ,   // 3 Podwojny   /28
-  SWITCH_KOR_PARTER,   // 4 Pojedynczy /27 OK 1
-  SWITCH_TOALETA,      // 5 Pojedynczy /26 NOK? jest inactive sprawdzic dlaczego
-  SWITCH_KUCHNIA_1,    // 6            /25 OK 13
-  SWITCH_KUCHNIA_2,    // 7 Podwojny   /24 NOK? Dlaczego na pinie 21 jest tylko 1.1V?
-  SWITCH_KUCHNIA_LED,  // 8 Pojedynczy /23 NOK? Dlaczego na pinie 20 jest 1.1V?
-  SWITCH_SALON1_1,     // 9            /6 OK
-  SWITCH_SALON1_2,     // 10 Podwojny  /7 OK
-  SWITCH_SALON2_1,     // 11           /8 OK
-  SWITCH_SALON2_2,     // 12 Podwojny  /9 OK
-  SWITCH_SALON_KINKIETY,// 13 Pojedynczy /10 - NOK Do Zmiany! zajęte przez SPI EN
-  SWITCH_SCHODY,       // 14 Pojedynczy /11
-  SWITCH_SCHODY_KINKIETY, // 15          /12 OK 6
-  SWITCH_RYGIEL_GORA,   // 16            /13 OK 7
-  SWITCH_RYGIEL_DOL, // 17     /A14 OK 6
-  SWITCH_BALKON,       // 18            /A13 OK 27
-  SWITCH_KOR_PIETRO,    // 19 Potrojny?  /A12 OK 4
-  SWITCH_KOR_PIETRO_NOCNE, // 20          /A11 OK 5 - DO wywalenia?
-  SWITCH_SYPIALNIA_1,   // 21            /A10  OK 18
-  SWITCH_SYPIALNIA_2,   // 22 Podwojny   /A9 OK 19
-  SWITCH_TARAS,        // 23            /A8 OK 28 
-  SWITCH_OGROD,        // 24 Podwojny   /A7 OK 32
-  SWITCH_GABINET_1,    // 25            /A6 OK 16
-  SWITCH_GABINET_2,    // 26 Podwojny   /A5 OK 17
-  SWITCH_LAZIENKA,     // 27 /A4
-  SWITCH_LAZIENKA_2,   // 28 /A3
-  SWITCH_DZIECKO_1,    // 29            /A2
-  SWITCH_DZIECKO_2,    // 30 Podwojny   /A1 OK 21
-  SWITCH_GARAZ,        // 31            /A0 OK 31
-  SWITCH_PRALNIA,      // 32            /A15 OK 30 
-  SWITCH_ULICA,        // DUMMY - tylko do smarthome
-  SWITCH_MAX_ID        // 28 sztuk
+  SWITCH_WEJSCIE = 0,
+  SWITCH_PIWNICA,
+  SWITCH_PRZEDPOKOJ,
+  SWITCH_KOR_PARTER,
+  SWITCH_TOALETA,
+  SWITCH_KUCHNIA_1,
+  SWITCH_KUCHNIA_2,
+  SWITCH_KUCHNIA_LED,
+  SWITCH_SALON1_1,
+  SWITCH_SALON1_2,
+  SWITCH_SALON2_1,
+  SWITCH_SALON2_2,
+  SWITCH_SALON_KINKIETY,
+  SWITCH_SCHODY,
+  SWITCH_SCHODY_KINKIETY,
+  SWITCH_RYGIEL_GORA,
+  SWITCH_RYGIEL_DOL,
+  SWITCH_BALKON,
+  SWITCH_KOR_PIETRO,
+  SWITCH_KOR_PIETRO_NOCNE,
+  SWITCH_SYPIALNIA_1,
+  SWITCH_SYPIALNIA_2,
+  SWITCH_TARAS,
+  SWITCH_OGROD,
+  SWITCH_GABINET_1,
+  SWITCH_GABINET_2,
+  SWITCH_LAZIENKA,
+  SWITCH_LAZIENKA_2,
+  SWITCH_DZIECKO_1,
+  SWITCH_DZIECKO_2,
+  SWITCH_GARAZ,
+  SWITCH_PRALNIA,
+  SWITCH_ULICA,        // DUMMY - control only via HA
+  SWITCH_MAX_ID
 } switchIds;
 
-// 8 pojedynczych
-// 8 podwojnych
-
 typedef enum {
-  RELAY_KOR_PARTER_1 = 0, // 42
-  RELAY_KOR_PARTER_2,     // 41
-  RELAY_PRZEDPOKOJ,       // 40
-  RELAY_KOR_PIETRO_1,     // 39
-  RELAY_KOR_PIETRO_2,     // 38
-  RELAY_SCHODY_KINKIETY,  // 37
-  RELAY_SCHODY,           // 36
-  RELAY_SALON1_1,         // 35
-  RELAY_SALON1_2,         // 34
-  RELAY_SALON2_1,         // 33
-  RELAY_SALON2_2,         // 32
-  RELAY_SALON_KINKIETY,   // 31
-  RELAY_KUCHNIA_1,        // 22
-  RELAY_KUCHNIA_2,        // 21
-  RELAY_KUCHNIA_LED,      // 20
-  RELAY_GABINET_1,        // 19
-  RELAY_GABINET_2,        // 18
-  RELAY_SYPIALNIA_1,      // 17
-  RELAY_SYPIALNIA_2,      // 16
-  RELAY_DZIECKO_1,        // 15
-  RELAY_DZIECKO_2,        // 14
-  RELAY_TOALETA,          // 2
-  RELAY_LAZIENKA_1,       // 3
-  RELAY_LAZIENKA_2,       // 4 // Nie uzywane
-  RELAY_WEJSCIE,          // 43
-  RELAY_ULICA,            // 44
-  RELAY_BALKON,           // 45
-  RELAY_TARAS,            // 46
-  RELAY_PIWNICA,          // 47
-  RELAY_KOTLOWNIA,        // 48
-  RELAY_GARAZ,            // 49
-  RELAY_OGROD,            // 50
-  RELAY_LAZIENKA_NOCNE,   // 51
+  RELAY_KOR_PARTER_1 = 0,
+  RELAY_KOR_PARTER_2,
+  RELAY_PRZEDPOKOJ,
+  RELAY_KOR_PIETRO_1,
+  RELAY_KOR_PIETRO_2,
+  RELAY_SCHODY_KINKIETY,
+  RELAY_SCHODY,
+  RELAY_SALON1_1,
+  RELAY_SALON1_2,
+  RELAY_SALON2_1,
+  RELAY_SALON2_2,
+  RELAY_SALON_KINKIETY,
+  RELAY_KUCHNIA_1,
+  RELAY_KUCHNIA_2,
+  RELAY_KUCHNIA_LED,
+  RELAY_GABINET_1,
+  RELAY_GABINET_2,
+  RELAY_SYPIALNIA_1,
+  RELAY_SYPIALNIA_2,
+  RELAY_DZIECKO_1,
+  RELAY_DZIECKO_2,
+  RELAY_TOALETA,
+  RELAY_LAZIENKA_1,
+  RELAY_LAZIENKA_2,
+  RELAY_WEJSCIE,
+  RELAY_ULICA,
+  RELAY_BALKON,
+  RELAY_TARAS,
+  RELAY_PIWNICA,
+  RELAY_KOTLOWNIA,
+  RELAY_GARAZ,
+  RELAY_OGROD,
+  RELAY_LAZIENKA_NOCNE,
   RELAY_ZASIL_RYGIEL,
-  RELAY_MAX_ID // 32 sztuk
+  RELAY_MAX_ID
 } relayIds;
 
 static tLightSwitch m_lights[] =
@@ -198,7 +195,7 @@ static tLightSwitch m_lights[] =
   {
     .pin = 15,
     .description = "WlacznikSalon22",
-    .relayId = RELAY_SALON2_1,  // SPrawdz!!
+    .relayId = RELAY_SALON2_1,
     .datatype = V_LIGHT,
     .sensortype = S_BINARY,
     .inactive = false,
@@ -463,7 +460,6 @@ static tRelay m_relays[] =
     .description = "SwiatloKuchnia2",
     .i2cAddress = 0x21,
   },
-   // poprawic
   [RELAY_KUCHNIA_LED] =
   {
     .pin = 6,
